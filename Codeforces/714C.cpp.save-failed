@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+int T;
+char op;
+string s;
+map<string,int> a;
+
+bool match(string s1, string s2) {
+    int i1=0,i2=0;
+    while(i1 < s1.length() && i2<s2.length()) {
+        if (s1[i1]-'0' && (s2[i2]-'0')&1 || s1[i1]=='0' && (s2[i2]-'0')%2 ==0) {
+            i1++;
+            i2++;
+            continue;
+        }
+        return false;
+    }
+    while(i1 < s1.length()) {
+        if (s1[i1]=='0') {
+            i1++;
+            continue;
+        }
+        return false;
+    }
+    while(i2 < s2.length()) {
+        if ((s2[i2]-'0')%2 ==0) {
+            i2++;
+            continue;
+        }
+        return false;
+    }
+    return true;
+
+}
+
+int main() {
+    cin >> T;
+    while(T--) {
+        cin >> op >> s;
+        if (op=='+') a[s]++;
+        if (op=='-') {
+            a[s]--;
+            if (!a[s]) a.erase(s);
+        }
+        if (op=='?') {
+            int cnt=0;
+            for (map<string,int>::iterator it=a.begin();it!=a.end();++it)
+                if (match(s,it->first) )
+                    cnt+=it->second;
+            cout << cnt << endl;
+        }
+    }
+}
